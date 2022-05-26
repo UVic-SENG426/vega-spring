@@ -5,6 +5,7 @@ COPY mvnw.cmd .
 COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
+COPY mvnw mvnw
 
 RUN ./mvnw install -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
