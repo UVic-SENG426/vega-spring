@@ -8,6 +8,7 @@ services:
     image: "venus/beeple"
     ports:
       - "8080:8080"
+
   venus-mysql:
     image: mysql:latest
     environment:
