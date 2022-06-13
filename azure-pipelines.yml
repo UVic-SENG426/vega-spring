@@ -3,7 +3,8 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- unit_test_1
+- master
+- feature-*
 
 resources:
 - repo: self
