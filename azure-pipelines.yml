@@ -38,7 +38,7 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-          $(latest)
+          latest
     - task: Maven@3
       inputs:
         mavenPomFile: 'pom.xml'
