@@ -64,20 +64,18 @@ stages:
         scannerMode: 'Other'
     - task: SonarQubeAnalyze@5
 
-- stage: Publish Artifacts
+- stage: Publish
   displayName: Publish Artifacts
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
-  - job: Test
-    displayName: Test
+  - job: Publish
+    displayName: Copy and Publish Artifacts
     steps:
     - task: CopyFiles@2
-      condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
       inputs:
           Contents: 'docker-compose.yml'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
     - task: PublishBuildArtifacts@1
-      condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
