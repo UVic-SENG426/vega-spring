@@ -43,12 +43,26 @@ stages:
         SonarQube: 'sonarCubeCloud'
         scannerMode: 'Other'
     - task: SonarQubeAnalyze@5
-    - task: CopyFiles@2
-      inputs:
-          Contents: 'docker-compose.yml'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+
+    ${{ if contains(Build.SourceBranch, 'master') }}:
+      - task: CopyFiles@2
+        inputs:
+            Contents: 'docker-compose.yml'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+    ${{ else }}:
+          - task: Maven@3
+            inputs:
+              mavenPomFile: "pom.xml"
+              publishJUnitResults: true
+              testResultsFiles: "**/surefire-reports/TEST-*.xml"
+              javaHomeOption: "JDKVersion"
+              mavenVersionOption: "Default"
+              mavenAuthenticateFeed: false
+              effectivePomSkip: false
+              sonarQubeRunAnalysis: false
+              sqMavenPluginVersionChoice: "latest"
