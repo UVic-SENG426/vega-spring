@@ -3,6 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
+  - master
   - develop
 
 resources:
@@ -38,6 +39,23 @@ stages:
               tags: |
                 $(tag)
                 latest
+          - task: SonarQubePrepare@5
+            inputs:
+              SonarQube: "sonarCubeCloud"
+              scannerMode: "Other"
+          - task: SonarQubeAnalyze@5
+
+        ${{ if contains(Build.SourceBranch, 'master') }}:
+          - task: CopyFiles@2
+            inputs:
+              Contents: "docker-compose.yml"
+              TargetFolder: "$(Build.ArtifactStagingDirectory)"
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+              ArtifactName: "drop"
+              publishLocation: "Container"
+        ${{ else }}:
           - task: Maven@3
             inputs:
               mavenPomFile: "pom.xml"
@@ -49,12 +67,3 @@ stages:
               effectivePomSkip: false
               sonarQubeRunAnalysis: false
               sqMavenPluginVersionChoice: "latest"
-          - task: CopyFiles@2
-            inputs:
-              Contents: "docker-compose.yml"
-              TargetFolder: "$(Build.ArtifactStagingDirectory)"
-          - task: PublishBuildArtifacts@1
-            inputs:
-              PathtoPublish: "$(Build.ArtifactStagingDirectory)"
-              ArtifactName: "drop"
-              publishLocation: "Container"
