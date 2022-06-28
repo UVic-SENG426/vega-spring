@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface SecretDAO extends JpaRepository<Secret, String> {
 
-
+    List<Secret> findAllByUsername(String username);
 }
