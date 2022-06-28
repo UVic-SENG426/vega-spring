@@ -27,10 +27,11 @@ public class VaultController {
     @Autowired
     StorageService storageService;
 
+//    Example: localhost:8080/venus/vault/secrets?username=admin
     @RequestMapping(value ="/secrets", method = RequestMethod.GET)
     public ResponseEntity<?> getSecrets(@RequestParam String username){
-//        List<Secret> secretList = secretDAO.findAllByUsername();
-        return ResponseEntity.ok(/*secretList*/"OK");
+        List<Secret> secretList = secretDAO.findAllByUsername(username);
+        return ResponseEntity.ok(secretList);
     }
 
     @RequestMapping(value="/secret-upload", method = RequestMethod.POST)
