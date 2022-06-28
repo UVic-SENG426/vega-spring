@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS userinfo (
 );
 
 CREATE TABLE secrets (
-  secret VARCHAR(100) NOT NULL, 
+  secret INT NOT NULL AUTO_INCREMENT, 
   value VARCHAR(250) NOT NULL, 
   username VARCHAR(50) NOT NULL, 
-  date DATE NOT NULL, 
+  date DATETIME NOT NULL DEFAULT now(), 
   FOREIGN KEY (username) REFERENCES users(username), 
   PRIMARY KEY (secret)
 );

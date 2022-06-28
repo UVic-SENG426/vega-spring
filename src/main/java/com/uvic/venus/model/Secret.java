@@ -1,5 +1,7 @@
 package com.uvic.venus.model;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,6 +17,11 @@ public class Secret {
     private String username;
 
     private String date;
+
+    public Secret(String value, String username) {
+        this.value = value;
+        this.username = username;
+    }
 
     public String getSecret() {
         return secret;
