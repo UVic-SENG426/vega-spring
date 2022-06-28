@@ -9,19 +9,19 @@ import javax.persistence.Table;
 public class Secret {
 
     @Id
-    private String key;
+    private String secret;
     private String value;
 
     private String username;
 
     private String date;
 
-    public String getKey() {
-        return key;
+    public String getSecret() {
+        return secret;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
     public String getValue() {
