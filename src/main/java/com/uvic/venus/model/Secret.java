@@ -7,11 +7,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name="secrets")
 public class Secret {
-//    TODO: do this according to the spec
 
     @Id
     private String key;
     private String value;
+
+    private String username;
+
+    private String date;
 
     public String getKey() {
         return key;
@@ -27,5 +30,21 @@ public class Secret {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
