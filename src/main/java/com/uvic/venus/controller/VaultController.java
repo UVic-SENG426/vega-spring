@@ -29,8 +29,7 @@ public class VaultController {
 //    Example: localhost:8080/venus/vault/secrets?username=admin
     @RequestMapping(value ="/secrets", method = RequestMethod.GET)
     public ResponseEntity<?> getSecrets(@RequestParam String username){
-//        List<Secret> secretList = secretDAO.findAllByUsername(username); //TODO
-        List<Secret> secretList = secretDAO.findAll();
+        List<Secret> secretList = secretDAO.findAllByUsername(username); //TODO
         return ResponseEntity.ok(secretList);
     }
 
@@ -39,6 +38,15 @@ public class VaultController {
         return ResponseEntity.ok("secret successfully deleted");
     }
 
+/*
+    example request
+    Header: localhost:8080/venus/vault/secret-upload
+    Body:
+    {
+    "value": "VALUE_STR",
+    "username": "ADMIN_STR"
+    }
+ */
     @RequestMapping(value="/secret-upload", method = RequestMethod.POST)
     public ResponseEntity<?> uploadSecret(@RequestBody CreateSecretRequest secretRequest){
         Secret secret = new Secret();
