@@ -27,8 +27,7 @@ CREATE TABLE secrets (
   secret VARCHAR(100) NOT NULL, 
   value VARCHAR(250) NOT NULL, 
   username VARCHAR(50) NOT NULL, 
-  date DATE NOT NULL, 
-  FOREIGN KEY (username) REFERENCES users(username), 
+  date VARCHAR(50) NOT NULL,
   PRIMARY KEY (secret)
 );
 -- CREATE UNIQUE  INDEX ix_auth_username on authorities (username,authority);
