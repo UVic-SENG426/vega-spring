@@ -29,12 +29,18 @@ public class VaultController {
 //    Example: localhost:8080/venus/vault/secrets?username=admin
     @RequestMapping(value ="/secrets", method = RequestMethod.GET)
     public ResponseEntity<?> getSecrets(@RequestParam String username){
-        List<Secret> secretList = secretDAO.findAllByUsername(username); //TODO
+        List<Secret> secretList = secretDAO.findAllByUsername(username);
         return ResponseEntity.ok(secretList);
     }
 
+//    Example: localhost:8080/venus/vault/secret-delete?secretID=0
     @RequestMapping(value ="/secret-delete", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteSecret(@RequestParam String secretID){
+        Secret s = secretDAO.getById(secretID);
+        if (s == null || s.getSecret().equals("")){
+            return ResponseEntity.notFound().build();
+        }
+        secretDAO.delete(s);
         return ResponseEntity.ok("secret successfully deleted");
     }
 
