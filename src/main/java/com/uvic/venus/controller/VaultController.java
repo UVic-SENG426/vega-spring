@@ -41,7 +41,26 @@ public class VaultController {
             return ResponseEntity.notFound().build();
         }
         secretDAO.delete(s);
-        return ResponseEntity.ok("secret successfully deleted");
+        return ResponseEntity.ok("secret deleted successfully");
+    }
+
+/*
+    example request
+    Header: localhost:8080/venus/vault/secret-update?secretID=0
+    Body:
+    {
+    "value": "VALUE_STR",
+    }
+ */
+    @RequestMapping(value ="/secret-update", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateSecret(@RequestParam String secretID, @RequestBody CreateSecretRequest secretRequest){
+        Secret s = secretDAO.getById(secretID);
+        if (s == null || s.getSecret().equals("")){
+            return ResponseEntity.notFound().build();
+        }
+        s.setValue(secretRequest.getValue());
+        secretDAO.save(s);
+        return ResponseEntity.ok("OK: secret updated successfully");
     }
 
 /*
