@@ -39,6 +39,16 @@ To stop any docker container. Here container id is the value from the first colu
 docker stop container-id
 ```
 
+To get into the db
+```
+mysql --host=localhost --user=root --password=pass venus
+```
+
+To create default Secret
+```
+insert into secrets (secret, value, username, date) values ("HELLO", "HELLLo", "admin@venus.com", now());
+```
+
 ## Data initialization
 
 Starting spring applicaiton will initialize the database (intialization can be controlled with property named "spring.sql.init.mode=always") with three different tables users, authorities and userinfo. Afterwards initialize all these tables with data from below table.
