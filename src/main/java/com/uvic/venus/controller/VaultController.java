@@ -21,9 +21,6 @@ public class VaultController {
     @Autowired
     SecretDAO secretDAO;
 
-    @Autowired
-    StorageService storageService;
-
     private static int newSecretID = 0;
 
 //    Example: localhost:8080/venus/vault/secrets?username=admin
@@ -83,6 +80,13 @@ public class VaultController {
         secret.setDate(dt.toString());
         Secret s = secretDAO.save(secret);
         return ResponseEntity.ok("OK: secret stored successfully");
+    }
+
+    /*
+    used for unit testing
+     */
+    public void setSecretDAO(SecretDAO secretDAO){
+        this.secretDAO = secretDAO;
     }
 }
 
