@@ -57,7 +57,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
         System.out.println("Entered into createAuthenticationRequests");
         try {
             authenticationManager.authenticate(
@@ -79,9 +79,9 @@ public class LoginController {
     }
 
     @RequestMapping(value="/register", method = RequestMethod.POST)
-    public ResponseEntity<?> registerUser(@RequestBody RegisterUserInfo user) throws Exception{
+    public ResponseEntity<?> registerUser(@RequestBody RegisterUserInfo user) {
         JdbcUserDetailsManager dataManager = new JdbcUserDetailsManager(dataSource);
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         //User user1 = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()), authorities);
@@ -101,4 +101,7 @@ public class LoginController {
     }
 
 
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 }
