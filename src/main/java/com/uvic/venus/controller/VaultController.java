@@ -3,7 +3,6 @@ package com.uvic.venus.controller;
 import com.uvic.venus.model.CreateSecretRequest;
 import com.uvic.venus.model.Secret;
 import com.uvic.venus.repository.SecretDAO;
-import com.uvic.venus.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
