@@ -37,9 +37,15 @@ public class FileController {
     @GetMapping("/fetch/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
         Resource file = storageService.loadAsResource(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+    /*
+    used in unit testing
+     */
+    public void setStorageService(StorageService storageService) {
+        this.storageService = storageService;
     }
 }
