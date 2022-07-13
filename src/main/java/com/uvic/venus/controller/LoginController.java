@@ -86,7 +86,7 @@ public class LoginController {
 
         //User user1 = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()), authorities);
         User.UserBuilder builder = User.builder();
-        builder.disabled(true);
+        builder.disabled(false);
         builder.passwordEncoder(passwordEncoder::encode);
         builder.password(user.getPassword());
         builder.username(user.getUsername());
