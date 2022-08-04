@@ -5,12 +5,14 @@ import com.uvic.venus.model.Secret;
 import com.uvic.venus.repository.SecretDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Optional;
 
 
 @RestController
@@ -22,9 +24,26 @@ public class VaultController {
 
     private static int newSecretID = 0;
 
+
+    public Optional<String> getLoggedInUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String username = null;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        return Optional.ofNullable(username);
+    }
+
 //    Example: localhost:8080/venus/vault/secrets?username=admin
     @RequestMapping(value ="/secrets", method = RequestMethod.GET)
     public ResponseEntity<?> getSecrets(@RequestParam String username){
+        Optional<String> loggedInUsername = getLoggedInUsername();
+        if (loggedInUsername.isEmpty() || ! loggedInUsername.get().equals(username)) {
+            return ResponseEntity.badRequest().build();
+        }
         List<Secret> secretList = secretDAO.findAllByUsername(username);
         return ResponseEntity.ok(secretList);
     }
@@ -35,6 +54,11 @@ public class VaultController {
         Secret s = secretDAO.getById(secretID);
         if (s == null || s.getSecret().equals("")){
             return ResponseEntity.notFound().build();
+        }
+        String username = s.getUsername();
+        Optional<String> loggedInUsername = getLoggedInUsername();
+        if (loggedInUsername.isEmpty() || ! loggedInUsername.get().equals(username)) {
+            return ResponseEntity.badRequest().build();
         }
         secretDAO.delete(s);
         return ResponseEntity.ok("secret deleted successfully");
@@ -54,6 +78,11 @@ public class VaultController {
         if (s == null || s.getSecret().equals("")){
             return ResponseEntity.notFound().build();
         }
+        String username = s.getUsername();
+        Optional<String> loggedInUsername = getLoggedInUsername();
+        if (loggedInUsername.isEmpty() || ! loggedInUsername.get().equals(username)) {
+            return ResponseEntity.badRequest().build();
+        }
         s.setValue(secretRequest.getValue());
         secretDAO.save(s);
         return ResponseEntity.ok("OK: secret updated successfully");
@@ -70,6 +99,11 @@ public class VaultController {
  */
     @RequestMapping(value="/secret-upload", method = RequestMethod.POST)
     public ResponseEntity<?> uploadSecret(@RequestBody CreateSecretRequest secretRequest){
+        Optional<String> loggedInUsername = getLoggedInUsername();
+        String username = secretRequest.getUsername();
+        if (loggedInUsername.isEmpty() || ! loggedInUsername.get().equals(username)) {
+            return ResponseEntity.badRequest().build();
+        }
         Secret secret = new Secret();
         secret.setSecret(Integer.toString(newSecretID++));
         secret.setValue(secretRequest.getValue());
