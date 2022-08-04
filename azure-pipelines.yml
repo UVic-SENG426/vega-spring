@@ -40,6 +40,17 @@ stages:
                 $(tag)
                 latest
 
+          - task: SonarQubePrepare@5
+            inputs:
+              SonarQube: 'sonarCubeCloud'
+              scannerMode: 'Other'
+              extraProperties: |
+                # Additional properties that will be passed to the scanner,
+                # Put one key=value per line, example:
+                # sonar.exclusions=**/*.bin
+                sonar.projectKey=SENG426Group2_SENG426Group2Project
+                sonar.projectName=SENG426Group2Project
+
   - stage: Testing
     displayName: Testing
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
@@ -58,11 +69,6 @@ stages:
               effectivePomSkip: false
               sonarQubeRunAnalysis: false
               sqMavenPluginVersionChoice: "latest"
-          - task: SonarQubePrepare@5
-            inputs:
-              SonarQube: "sonarCubeCloud"
-              scannerMode: "Other"
-          - task: SonarQubeAnalyze@5
 
   - stage: Publish
     displayName: Publish Artifacts
